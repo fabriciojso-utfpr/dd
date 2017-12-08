@@ -12,6 +12,11 @@ class PersonagemController extends Controller
 
     use FormBuilderTrait;
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $personagens = Personagem::all();

@@ -20,7 +20,6 @@
     }
 </style>
 
-
 <body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -35,6 +34,28 @@
             <a class="navbar-brand" href="/">D&D - Adventurers League</a>
         </div>
 
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                @guest
+                    <li><a href="{{ route('login') }}">Entrar</a></li>
+                    <li><a href="{{ route('register') }}">Cadastre-se</a></li>
+                @endguest
+                @auth
+                <li>
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        Sair
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </li>
+                @endauth
+            </ul>
+        </div>
+
     </div>
 </nav>
 
@@ -42,7 +63,6 @@
     <div class="row col-sm-10 col-sm-offset-1">
         @yield('content')
     </div>
-
 </div>
 
 
