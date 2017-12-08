@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\Form;
 
 class PersonagemForm extends Form
@@ -11,14 +12,6 @@ class PersonagemForm extends Form
         $this
             ->add('nome', 'text', [
                 'label' => 'Nome do Personagem',
-                'rules' => 'required|unique:personagems,nome',
-                'error_messages' => [
-                    'title.required' => 'O nome do personagem é obrigatório!',
-                    'title.unique' => 'O nome do personagem deve ser único'
-                ],
-                'attr'=>[
-                    'class'=>'form-control'
-                ]
             ])
             ->add('classe', 'text',  [
                 'label' => 'Classe do Personagem',
@@ -120,6 +113,9 @@ class PersonagemForm extends Form
                 'error_messages' => [
                     'title.required' => 'O Carisma é obrigatório!'
                 ]
+            ])
+            ->add("user_id", "hidden", [
+                'value'=>Auth::id()
             ])
             ->add('enviar', 'submit', [
                 'attr'=>[

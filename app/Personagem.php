@@ -20,6 +20,7 @@ class Personagem extends Model
         'constituicao',
         'sabedoria',
         'carisma',
-        'destreza'
+        'destreza',
+        'user_id'
     ];
 }

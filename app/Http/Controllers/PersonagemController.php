@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Forms\PersonagemForm;
 use App\Personagem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 
 class PersonagemController extends Controller
@@ -19,7 +20,7 @@ class PersonagemController extends Controller
 
     public function index()
     {
-        $personagens = Personagem::all();
+        $personagens = Personagem::where('user_id', Auth::id())->get();
         return view("personagem/lista", compact('personagens'));
     }
 
@@ -48,6 +49,9 @@ class PersonagemController extends Controller
 
     public function edit(Personagem $personagem)
     {
+        if($personagem->user_id != Auth::id()){
+            return redirect()->route("personagem.index");
+        }
         $form = $this->form(PersonagemForm::class, [
             'method' => 'PUT',
             'url' => route('personagem.update',['id'=>$personagem->id]),
@@ -60,7 +64,14 @@ class PersonagemController extends Controller
 
     public function update(Request $request, Personagem $personagem)
     {
+        if($personagem->user_id != Auth::id()){
+            return redirect()->route("personagem.index");
+        }
         $form = $this->form(PersonagemForm::class);
+        $form->validate(['nome'=>'required|unique:personagems,nome,'.$personagem->id], [
+            'title.required' => 'O nome do personagem é obrigatório!',
+            'title.unique' => 'O nome do personagem deve ser único'
+        ]);
         if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
@@ -71,6 +82,9 @@ class PersonagemController extends Controller
 
     public function destroy(Personagem $personagem)
     {
+        if($personagem->user_id != Auth::id()){
+            return redirect()->route("personagem.index");
+        }
         $personagem->delete();
         return redirect()->route("personagem.index");
     }
