@@ -11,7 +11,7 @@ class PersonagemForm extends Form
         $this
             ->add('nome', 'text', [
                 'label' => 'Nome do Personagem',
-                'rules' => 'required|unique:personagems',
+                'rules' => 'required|unique:personagems,nome',
                 'error_messages' => [
                     'title.required' => 'O nome do personagem é obrigatório!',
                     'title.unique' => 'O nome do personagem deve ser único'

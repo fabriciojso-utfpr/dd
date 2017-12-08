@@ -37,6 +37,10 @@ class PersonagemController extends Controller
 
     public function store(Request $request)
     {
+        $form = $this->form(PersonagemForm::class);
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
         Personagem::create($request->all());
         return redirect()->route("personagem.index");
     }
