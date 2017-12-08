@@ -60,6 +60,10 @@ class PersonagemController extends Controller
 
     public function update(Request $request, Personagem $personagem)
     {
+        $form = $this->form(PersonagemForm::class);
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
         $personagem->update($request->all());
         return redirect()->route("personagem.index");
     }
