@@ -39,6 +39,10 @@ class PersonagemController extends Controller
     public function store(Request $request)
     {
         $form = $this->form(PersonagemForm::class);
+        $form->validate(['nome'=>'required|unique:personagems,nome'], [
+            'title.required' => 'O nome do personagem é obrigatório!',
+            'title.unique' => 'O nome do personagem deve ser único'
+        ]);
         if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
